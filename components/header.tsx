@@ -16,9 +16,23 @@ const navLinks = [
 export function Header() {
   const { count, openCart } = useCart();
   const [scrolled, setScrolled] = React.useState(false);
+  // Hidden when scrolling down (to free up screen), shown when scrolling up.
+  const [hidden, setHidden] = React.useState(false);
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let lastY = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // Only hide once we're past the header's own height, and ignore
+      // tiny jitters so the bar doesn't flicker.
+      if (Math.abs(y - lastY) > 6) {
+        setHidden(y > 96 && y > lastY);
+        lastY = y;
+      }
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -27,9 +41,9 @@ export function Header() {
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
+      animate={{ y: hidden ? -88 : 0, opacity: hidden ? 0 : 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed inset-x-0 top-0 z-40 transition-[background,box-shadow] duration-500 ${
         scrolled
           ? "bg-parchment/85 shadow-warm-sm backdrop-blur-md"
           : "bg-transparent"

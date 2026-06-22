@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
+import { WeOfferSection } from "@/components/WeOfferSection";
 import { Story } from "@/components/story";
 import { ProductGrid } from "@/components/product-grid";
 import { Features } from "@/components/features";
@@ -41,6 +42,7 @@ export default function Home() {
       <CartDrawer />
       <main>
         <Hero />
+        <WeOfferSection />
         <Story />
         <ProductGrid />
         <Features />
