@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Zamane Workshop — design tokens (Tailwind v4 @theme)
+ * Mirrors lib/theme.ts. Exposes utilities like bg-parchment, text-cognac,
+ * font-serif, shadow-warm, etc.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-cognac: #8b5e3c;
+  --color-espresso: #3e2a20;
+  --color-terracotta: #c26b4a;
+  --color-ochre: #d9a441;
+  --color-parchment: #f4ece2;
+  --color-cream: #fbf6ef;
+  --color-walnut: #2a1f18;
+  --color-taupe: #a8927d;
+
+  /* Semantic aliases */
+  --color-background: #f4ece2;
+  --color-surface: #fbf6ef;
+  --color-foreground: #2a1f18;
+  --color-primary: #8b5e3c;
+  --color-accent: #c26b4a;
+
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+
+  /* Warm-toned shadows (not gray) */
+  --shadow-warm-sm: 0 2px 8px -2px rgba(62, 42, 32, 0.12);
+  --shadow-warm: 0 14px 40px -12px rgba(62, 42, 32, 0.22);
+  --shadow-warm-lg: 0 28px 64px -20px rgba(62, 42, 32, 0.32);
+
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchored scroll for the fixed header */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-parchment);
+    color: var(--color-walnut);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-ochre);
+    color: var(--color-espresso);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  /* Faint paper / leather-grain texture for parchment sections.
+     Built from layered radial + repeating gradients — no image asset needed. */
+  .texture-paper {
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(139, 94, 60, 0.04) 0, transparent 45%),
+      radial-gradient(circle at 80% 0%, rgba(217, 164, 65, 0.05) 0, transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(194, 107, 74, 0.04) 0, transparent 55%),
+      repeating-linear-gradient(
+        115deg,
+        rgba(62, 42, 32, 0.015) 0px,
+        rgba(62, 42, 32, 0.015) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+  }
+
+  .texture-grain {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(62, 42, 32, 0.025) 0px,
+        rgba(62, 42, 32, 0.025) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.04) 0px,
+        rgba(255, 255, 255, 0.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .heading-spaced {
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Respect reduced-motion preferences across the whole site */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
